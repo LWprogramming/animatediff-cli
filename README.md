@@ -98,6 +98,7 @@ used the same license they did (Apache 2.0).
 - install things using the writeup above. you'll have to get torch with cuda118 on linux bc no such thing exists on mac of course
 
 ```
+# cd into src/animatediff because imports and that sort of stuff is cog being silly
 # then get the cog executable
 # TODO: this curl command can fail because the release names are like
 # https://github.com/replicate/cog/releases/download/v0.8.6/cog_linux_x86_64
