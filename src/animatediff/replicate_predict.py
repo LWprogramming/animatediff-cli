@@ -39,7 +39,7 @@ class Predictor(BasePredictor):
 
         self.pipeline = create_pipeline(
             base_model=self.base_model_path,
-            model_config=get_model_config("config/prompts/01-ToonYou.json"),
+            model_config=get_model_config("01-ToonYou.json"),
             infer_config=get_infer_config(),
             use_xformers=use_xformers,
         )
@@ -53,7 +53,7 @@ class Predictor(BasePredictor):
     def predict(
         self,
         prompt: str = Input(
-            description="Semicolon-separated list of prompts. Naturally the prompt itself cannot contain semicolons.",
+            description="List of prompts separated by newlines. Naturally each individual prompt itself cannot contain newlines.",
             default="",
         ),
         n_prompt: str = Input(description="Negative prompt to be used for all stages for now", default=""),
@@ -72,7 +72,7 @@ class Predictor(BasePredictor):
     ) -> List[Path]:
         save_dir = f"animatediff_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         save_dir.mkdir(parents=True, exist_ok=True)
-        prompts = prompt.split(";")
+        prompts = prompt.split("\n")
         # TODO: figure out this later iguess
         overlap = None
         stride = None
