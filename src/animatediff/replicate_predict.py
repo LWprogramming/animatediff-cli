@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pathlib import Path
 
 from animatediff import __version__, console, get_dir
@@ -58,7 +58,7 @@ class Predictor(BasePredictor):
         ),
         no_frames: bool = Input(description="Initialize no_frames", default=False),
         save_merged: bool = Input(description="Initialize save_merged", default=True),
-    ):
+    ) -> List[Path]:
         save_dir = f"animatediff_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         save_dir.mkdir(parents=True, exist_ok=True)
 
