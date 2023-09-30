@@ -23,8 +23,6 @@ class Predictor(BasePredictor):
     def setup(self):
         # Load the model into memory to make running multiple predictions efficient
         device = "cuda"
-        self.pipeline = None
-        self.base_model_path: Path = None
 
         # Get the base model if we don't have it already
         self.base_model_path = get_base_model(
@@ -37,6 +35,7 @@ class Predictor(BasePredictor):
         use_xformers = False  # TODO: Look into this later", default=False),
         force_half_vae = False  # TODO: nput(description="Look into this later", default=False),
 
+        print("creating pipeline...")
         self.pipeline = create_pipeline(
             base_model=self.base_model_path,
             model_config=get_model_config("01-ToonYou.json"),
@@ -44,6 +43,7 @@ class Predictor(BasePredictor):
             use_xformers=use_xformers,
         )
 
+        print("sending pipeline to device...")
         # Send the pipeline to device
         device: torch.device = torch.device(device)
         self.pipeline = send_to_device(
@@ -59,7 +59,7 @@ class Predictor(BasePredictor):
         n_prompt: str = Input(description="Negative prompt to be used for all stages for now", default=""),
         seed: int = Input(description="Seed for random number generator", default=42),
         steps: int = Input(description="Number of steps for the inference", default=20),
-        guidance_scale: float = Input(description="Guidance scale for the inference", default=0.7),
+        guidance_scale: float = Input(description="Guidance scale for the inference", default=7.5),
         width: int = Input(description="Width of the image", default=576),
         height: int = Input(description="Height of the image", default=576),
         duration: int = Input(description="Duration in frames", default=16),
@@ -99,11 +99,9 @@ class Predictor(BasePredictor):
                 clip_skip=1,
             )
             output_paths.append(output)
-
-        if no_frames is not True:
-            frames_path = save_dir.joinpath("frames")
-            save_frames(output, frames_path)
-            output_paths.append(frames_path)
+            torch.cuda.empty_cache()
+            if not no_frames:
+                save_frames(output, save_dir.joinpath(f"{i}-{seed}"))
 
         # Save a merged animation of all prompts
         if save_merged:
