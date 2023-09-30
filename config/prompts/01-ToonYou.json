@@ -1,11 +1,13 @@
 {
   "name": "ToonYou",
   "base": "",
-  "path": "models/sd/toonyou_beta3.safetensors",
+  "path": "models/DreamBooth_LoRA/toonyou_beta3.safetensors",
   "motion_module": "models/motion-module/mm_sd_v15.ckpt",
   "compile": false,
   "seed": [
-    10788741199826055000, 6520604954829637000, 6519455744612556000,
+    10788741199826055000,
+    6520604954829637000,
+    6519455744612556000,
     16372571278361864000
   ],
   "scheduler": "ddim",
