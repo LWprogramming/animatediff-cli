@@ -108,6 +108,8 @@ echo 'export PATH="$HOME/cog:$PATH"' >> ~/.bashrc
 ./cog init
 
 echo "REMEMBER THE cog.yaml TO INCLUDE GPU IN BUILD!!!"
+# also add cuda: "11.8" so that you can pull out the right torch version bc that's what we need here.
+# and you're going to need to freeze requirements.txt and add `--extra-index-url https://download.pytorch.org/whl/cu118` to the top fo requirements.txt, see here https://github.com/replicate/cog/issues/1266#issuecomment-1741832134 and discussion below
 echo "And run ./cog login if you haven't already"
 echo "And also change the cog yaml to whatever prediction file you want to use
 
