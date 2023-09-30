@@ -1,17 +1,17 @@
 from typing import Optional, List
 from pathlib import Path
 
-from animatediff import __version__, console, get_dir
-from animatediff.generate import create_pipeline, run_inference
-from animatediff.settings import (
+from src.animatediff import __version__, console, get_dir
+from src.animatediff.generate import create_pipeline, run_inference
+from src.animatediff.settings import (
     InferenceConfig,
     ModelConfig,
     get_infer_config,
     get_model_config,
 )
-from animatediff.utils.model import get_base_model
-from animatediff.utils.pipeline import send_to_device
-from animatediff.utils.util import save_frames, save_video
+from src.animatediff.utils.model import get_base_model
+from src.animatediff.utils.pipeline import send_to_device
+from src.animatediff.utils.util import save_frames, save_video
 
 
 from cog import BasePredictor, Input
