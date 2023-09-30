@@ -6,6 +6,8 @@ from animatediff.generate import create_pipeline, run_inference
 from animatediff.settings import (
     InferenceConfig,
     ModelConfig,
+    get_infer_config,
+    get_model_config,
 )
 from animatediff.utils.model import get_base_model
 from animatediff.utils.pipeline import send_to_device
@@ -31,13 +33,14 @@ class Predictor(BasePredictor):
 
         # Create the pipeline
         # TODO: right now the config file is hardcoded and we need to change that later
+        # we also totally ignore the prompts in the config file itself since we just set it in predict()
         use_xformers = False  # TODO: Look into this later", default=False),
         force_half_vae = False  # TODO: nput(description="Look into this later", default=False),
 
         self.pipeline = create_pipeline(
             base_model=self.base_model_path,
-            model_config=ModelConfig.from_json_file("config/prompts/01-ToonYou.json"),
-            infer_config=InferenceConfig(),
+            model_config=get_model_config("config/prompts/01-ToonYou.json"),
+            infer_config=get_infer_config(),
             use_xformers=use_xformers,
         )
 
@@ -49,9 +52,17 @@ class Predictor(BasePredictor):
 
     def predict(
         self,
+        prompt: str = Input(
+            description="Semicolon-separated list of prompts. Naturally the prompt itself cannot contain semicolons.",
+            default="",
+        ),
+        n_prompt: str = Input(description="Negative prompt to be used for all stages for now", default=""),
+        seed: int = Input(description="Seed for random number generator", default=42),
+        steps: int = Input(description="Number of steps for the inference", default=20),
+        guidance_scale: float = Input(description="Guidance scale for the inference", default=0.7),
         width: int = Input(description="Width of the image", default=576),
         height: int = Input(description="Height of the image", default=576),
-        length: int = Input(description="Length in frames", default=16),
+        duration: int = Input(description="Duration in frames", default=16),
         context: int = Input(
             description="Context for the image generation. Suggest 8 for low memory, 16-20 as default, 24 as the max",
             default=8,
@@ -61,30 +72,34 @@ class Predictor(BasePredictor):
     ) -> List[Path]:
         save_dir = f"animatediff_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         save_dir.mkdir(parents=True, exist_ok=True)
-
+        prompts = prompt.split(";")
         # TODO: figure out this later iguess
         overlap = None
         stride = None
         # Run inference and save frames
-        output = run_inference(
-            pipeline=self.pipeline,
-            prompt="",
-            n_prompt="",
-            seed=0,
-            steps=100,
-            guidance_scale=0.0,
-            width=width,
-            height=height,
-            duration=length,
-            idx=0,
-            out_dir=save_dir,
-            context_frames=context,
-            context_overlap=overlap,
-            context_stride=stride,
-            clip_skip=1,
-        )
-
         output_paths = []
+
+        for i in range(duration):
+            print(f"Generating frame {i} of {duration}")
+            output = run_inference(
+                pipeline=self.pipeline,
+                prompt=prompts[i],
+                n_prompt=n_prompt,
+                seed=seed,
+                steps=steps,
+                guidance_scale=guidance_scale,
+                width=width,
+                height=height,
+                duration=duration,
+                idx=i,
+                out_dir=save_dir,
+                context_frames=context,
+                context_overlap=overlap,
+                context_stride=stride,
+                clip_skip=1,
+            )
+            output_paths.append(output)
+
         if no_frames is not True:
             frames_path = save_dir.joinpath("frames")
             save_frames(output, frames_path)
