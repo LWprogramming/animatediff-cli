@@ -111,6 +111,7 @@ echo 'export PATH="$HOME/cog:$PATH"' >> ~/.bashrc
 echo "REMEMBER THE cog.yaml TO INCLUDE GPU IN BUILD!!!"
 # also add cuda: "11.8" so that you can pull out the right torch version bc that's what we need here.
 # and you're going to need to freeze requirements.txt and add `--extra-index-url https://download.pytorch.org/whl/cu118` to the top fo requirements.txt, see here https://github.com/replicate/cog/issues/1266#issuecomment-1741832134 and discussion below
+# also fix the animatediff install so that you install from repo via https like -e git+https://github.com/LWprogramming/animatediff-cli.git@8a605f73d9cbee986855d5e9519c7e3d3bb48392#egg=animatediff (you will probably want to change this to the original repo or your personal fork in case I end up deleting this fork at some point or whatever). Cog fails if you try to download via ssh so if you git cloned via ssh or something you'll need to manually fix that.
 echo "And run ./cog login if you haven't already"
 echo "And also change the cog yaml to whatever prediction file you want to use
 
