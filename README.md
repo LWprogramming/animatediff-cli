@@ -93,3 +93,29 @@ see [guoyww/AnimateDiff](https://github.com/guoyww/AnimateDiff) (very little of 
 n.b. the copyright notice in `COPYING` is missing the original authors' names, solely because
 the original repo (as of this writing) has no name attached to the license. I have, however,
 used the same license they did (Apache 2.0).
+
+# GETTING THINGS SET UP ON REPLICATE
+- install things using the writeup above. you'll have to get torch with cuda118 on linux bc no such thing exists on mac of course
+
+```
+# then get the cog executable
+# TODO: this curl command can fail because the release names are like
+# https://github.com/replicate/cog/releases/download/v0.8.6/cog_linux_x86_64
+# which doesn't match the curl command below but they're INCONSISTENTLY mismatched which sucks
+curl -o ./cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+chmod +x ./cog
+echo 'export PATH="$HOME/cog:$PATH"' >> ~/.bashrc
+./cog init
+
+echo "REMEMBER THE cog.yaml TO INCLUDE GPU IN BUILD!!!"
+echo "And run ./cog login if you haven't already"
+echo "And also change the cog yaml to whatever prediction file you want to use
+
+# Push trained model to Replicate
+# Assumes you've already run
+# ./cog login
+# and created a project named PROJECT_NAME
+
+./cog push r8.im/lwprogramming/${PROJECT_NAME} # uses predict.py by default-- probably should change to replicate_predict.py in the yaml
+
+```
