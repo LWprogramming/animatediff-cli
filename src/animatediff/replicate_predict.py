@@ -1,10 +1,10 @@
 from typing import Optional
 from pathlib import Path
-from .settings import ModelConfig, InferenceConfig
-from .generate import create_pipeline, run_inference
-from .utils.model import get_base_model, load_text_embeddings
-from .utils.pipeline import get_context_params, send_to_device
-from .utils.util import get_dir, relative_path, save_frames, save_video
+from animatediff.settings import ModelConfig, InferenceConfig
+from animatediff.generate import create_pipeline, run_inference
+from animatediff.utils.model import get_base_model, load_text_embeddings
+from animatediff.utils.pipeline import get_context_params, send_to_device
+from animatediff.utils.util import get_dir, relative_path, save_frames, save_video
 
 from cog import BasePredictor, Input
 from datetime import datetime
