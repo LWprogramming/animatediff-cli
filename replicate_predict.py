@@ -25,6 +25,7 @@ class Predictor(BasePredictor):
         device = "cuda"
 
         # Get the base model if we don't have it already
+        print("getting base model...")
         self.base_model_path = get_base_model(
             "runwayml/stable-diffusion-v1-5", local_dir=get_dir("data/models/huggingface")
         )
@@ -36,7 +37,6 @@ class Predictor(BasePredictor):
         force_half_vae = False  # TODO: nput(description="Look into this later", default=False),
 
         print("creating pipeline...")
-        raise AssertionError("HERE LOL")
         self.pipeline = create_pipeline(
             base_model=self.base_model_path,
             model_config=get_model_config("01-ToonYou.json"),
