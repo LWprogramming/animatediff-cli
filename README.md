@@ -95,6 +95,9 @@ the original repo (as of this writing) has no name attached to the license. I ha
 used the same license they did (Apache 2.0).
 
 # GETTING THINGS SET UP ON REPLICATE
+EDIT: i give up. this repo is super baffling and I regret trying to make it work. Going to try this instead which has a working replicate setup https://github.com/lucataco/cog-animatediff/blob/main/predict.py#L17
+
+
 - install things using the writeup above. you'll have to get torch with cuda118 on linux bc no such thing exists on mac of course
 
 ```
@@ -113,6 +116,7 @@ echo "REMEMBER THE cog.yaml TO INCLUDE GPU IN BUILD!!!"
 # and you're going to need to freeze requirements.txt and add `--extra-index-url https://download.pytorch.org/whl/cu118` to the top of requirements.txt, see here https://github.com/replicate/cog/issues/1266#issuecomment-1741832134 and discussion below
 # also fix the animatediff install so that you install from repo via https like -e git+https://github.com/LWprogramming/animatediff-cli.git@8a605f73d9cbee986855d5e9519c7e3d3bb48392#egg=animatediff (you will probably want to change this to the original repo or your personal fork in case I end up deleting this fork at some point or whatever). Cog fails if you try to download via ssh so if you git cloned via ssh or something you'll need to manually fix that.
 # and also make sure your .dockerignore is manually ignoring stuff like venv files
+# and also download the checkpoints to your local dir if you haven't already and make sure they went to the right places
 echo "And run ./cog login if you haven't already"
 echo "And also change the cog yaml to whatever prediction file you want to use
 
@@ -124,3 +128,4 @@ echo "And also change the cog yaml to whatever prediction file you want to use
 ./cog push r8.im/lwprogramming/${PROJECT_NAME} # uses predict.py by default-- probably should change to replicate_predict.py in the yaml
 
 ```
+

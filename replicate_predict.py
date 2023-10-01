@@ -12,44 +12,21 @@ from src.animatediff.settings import (
 from src.animatediff.utils.model import get_base_model
 from src.animatediff.utils.pipeline import send_to_device
 from src.animatediff.utils.util import save_frames, save_video
-
-
 from cog import BasePredictor, Input
 from datetime import datetime
 import torch
+
+from diffusers import AutoencoderKL, DDIMScheduler
+from transformers import CLIPTextModel, CLIPTokenizer
 
 
 class Predictor(BasePredictor):
     def setup(self):
         # Load the model into memory to make running multiple predictions efficient
-        device = "cuda"
-
-        # Get the base model if we don't have it already
-        print("getting base model...")
-        self.base_model_path = get_base_model(
-            "runwayml/stable-diffusion-v1-5", local_dir=get_dir("data/models/huggingface")
-        )
-
-        # Create the pipeline
-        # TODO: right now the config file is hardcoded and we need to change that later
-        # we also totally ignore the prompts in the config file itself since we just set it in predict()
-        use_xformers = False  # TODO: Look into this later", default=False),
-        force_half_vae = False  # TODO: nput(description="Look into this later", default=False),
-
-        print("creating pipeline...")
-        self.pipeline = create_pipeline(
-            base_model=self.base_model_path,
-            model_config=get_model_config("config/prompts/01-ToonYou.json"),
-            infer_config=get_infer_config(),
-            use_xformers=use_xformers,
-        )
-
-        print("sending pipeline to device...")
-        # Send the pipeline to device
-        device: torch.device = torch.device(device)
-        self.pipeline = send_to_device(
-            self.pipeline, device, freeze=True, force_half=force_half_vae, compile=True
-        )
+        pretrained_model_path = "/AnimateDiff/models/StableDiffusion/stable-diffusion-v1-5"
+        self.tokenizer = CLIPTokenizer.from_pretrained(pretrained_model_path, subfolder="tokenizer")
+        self.text_encoder = CLIPTextModel.from_pretrained(pretrained_model_path, subfolder="text_encoder")
+        self.vae = AutoencoderKL.from_pretrained(pretrained_model_path, subfolder="vae")
 
     def predict(
         self,
@@ -71,6 +48,26 @@ class Predictor(BasePredictor):
         no_frames: bool = Input(description="Initialize no_frames", default=False),
         save_merged: bool = Input(description="Initialize save_merged", default=True),
     ) -> List[Path]:
+        device = "cuda"
+        print("creating pipeline...")
+        # # Create the pipeline
+        # # TODO: right now the config file is hardcoded and we need to change that later
+        # # we also totally ignore the prompts in the config file itself since we just set it in predict()
+        # use_xformers = False  # TODO: Look into this later", default=False),
+        # force_half_vae = False  # TODO: nput(description="Look into this later", default=False),
+        # self.pipeline = create_pipeline(
+        #     base_model=self.base_model_path,
+        #     model_config=get_model_config("config/prompts/01-ToonYou.json"),
+        #     infer_config=get_infer_config(),
+        #     use_xformers=use_xformers,
+        # )
+        # print("sending pipeline to device...")
+        # # Send the pipeline to device
+        # device: torch.device = torch.device(device)
+        # self.pipeline = send_to_device(
+        #     self.pipeline, device, freeze=True, force_half=force_half_vae, compile=True
+        # )
+
         save_dir = f"animatediff_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
         save_dir.mkdir(parents=True, exist_ok=True)
         prompts = prompt.split("\n")
