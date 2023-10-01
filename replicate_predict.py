@@ -39,7 +39,7 @@ class Predictor(BasePredictor):
         print("creating pipeline...")
         self.pipeline = create_pipeline(
             base_model=self.base_model_path,
-            model_config=get_model_config("01-ToonYou.json"),
+            model_config=get_model_config("config/prompts/01-ToonYou.json"),
             infer_config=get_infer_config(),
             use_xformers=use_xformers,
         )
