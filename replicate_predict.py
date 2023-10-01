@@ -36,6 +36,7 @@ class Predictor(BasePredictor):
         force_half_vae = False  # TODO: nput(description="Look into this later", default=False),
 
         print("creating pipeline...")
+        raise AssertionError("HERE LOL")
         self.pipeline = create_pipeline(
             base_model=self.base_model_path,
             model_config=get_model_config("01-ToonYou.json"),
