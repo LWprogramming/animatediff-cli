@@ -59,13 +59,14 @@ class Predictor(cog.BasePredictor):
             ),
             default=None,
         ),
+        seed: int = cog.Input(
+            description="OPTIONAL: Seed for the random number generator",
+            default=None,
+        ),
     ) -> List[cog.Path]:
         """Run a single prediction on the model"""
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
-        print("beginning generation")
-
-        # Parse prompt_map and n_prompt
         # Parse prompt_map and n_prompt
         if prompt_map is not None:
             # The prompt_map is expected to be a string with each line in the format 'number: description'
@@ -82,11 +83,8 @@ class Predictor(cog.BasePredictor):
                 raise ValueError(
                     "prompt_map is not formatted correctly. It should be 'number: description' per line"
                 ) from e
-        if n_prompt is not None:
-            # n_prompt is expected to be a single string. If it's not None, it's wrapped in a list for later use.
-            n_prompt = [n_prompt]
-            n_prompt = [n_prompt]
 
+        print("beginning generation")
         generate(
             model_name_or_path="stable-diffusion-v1-5",  # just loads from data/models/huggingface/stable-diffusion-v1-5, where we have the weights loaded locally, so we don't need to download them
             config_path=pathlib.Path(config_path),
@@ -101,6 +99,7 @@ class Predictor(cog.BasePredictor):
             tail_prompt=tail_prompt,
             prompt_map=prompt_map,
             n_prompt=n_prompt,
+            seed=seed,
         )
         print("generation complete")
 

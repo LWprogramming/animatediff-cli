@@ -305,10 +305,18 @@ def generate(
         ),
     ] = None,
     n_prompt: Annotated[
-        Optional[List[str]],
+        Optional[str],
         typer.Option(
             "--n-prompt",
             help="OPTIONAL: Override the negative prompt from the model config",
+            rich_help_panel="Advanced",
+        ),
+    ] = None,
+    seed: Annotated[
+        Optional[int],
+        typer.Option(
+            "--seed",
+            help="OPTIONAL: Override the seed from the model config",
             rich_help_panel="Advanced",
         ),
     ] = None,
@@ -338,16 +346,23 @@ def generate(
     # Check if optional arguments are not None and override them
     if head_prompt is not None:
         model_config.head_prompt = head_prompt
-        print("Overriding head_prompt from the model config")
+        print(f"Overriding head_prompt from the model config (head_prompt: {head_prompt})")
     if tail_prompt is not None:
         model_config.tail_prompt = tail_prompt
-        print("Overriding tail_prompt from the model config")
+        print(f"Overriding tail_prompt from the model config (tail_prompt: {tail_prompt})")
     if prompt_map is not None:
         model_config.prompt_map = prompt_map
-        print("Overriding prompt_map from the model config")
+        print(f"Overriding prompt_map from the model config (prompt_map: {prompt_map})")
     if n_prompt is not None:
         model_config.n_prompt = n_prompt
-        print("Overriding n_prompt from the model config")
+        print(f"Overriding n_prompt from the model config (n_prompt: {n_prompt})")
+    if seed is not None:
+        model_config.seed = seed
+        print(f"Overriding seed from the model config (seed: {seed})")
+    print(
+        f"types: head_prompt: {type(head_prompt)}, tail_prompt: {type(tail_prompt)}, prompt_map: {type(prompt_map)}, n_prompt: {type(n_prompt)}, seed: {type(seed)}"
+    )
+    raise AssertionError("stop here")
     is_v2 = is_v2_motion_module(data_dir.joinpath(model_config.motion_module))
     infer_config: InferenceConfig = get_infer_config(is_v2)
 
