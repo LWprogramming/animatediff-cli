@@ -37,6 +37,7 @@ class Predictor(cog.BasePredictor):
         if os.path.exists(out_dir):
             raise FileExistsError(f"Output directory {out_dir} already exists.")
         os.makedirs(out_dir)
+        print("beginning generation")
         generate(
             model_name_or_path="stable-diffusion-v1-5",  # just loads from data/models/huggingface/stable-diffusion-v1-5, where we have the weights loaded locally, so we don't need to download them
             config_path=pathlib.Path(config_path),
@@ -48,6 +49,7 @@ class Predictor(cog.BasePredictor):
             no_frames=no_frames,
             save_merged=save_merged,
         )
+        print("generation complete")
 
         # return [cog.Path(os.path.join(out_dir, file)) for file in os.listdir(out_dir)]
         def get_files_recursive(path_str):
