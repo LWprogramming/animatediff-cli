@@ -478,3 +478,13 @@ see [guoyww/AnimateDiff](https://github.com/guoyww/AnimateDiff) (very little of 
 n.b. the copyright notice in `COPYING` is missing the original authors' names, solely because
 the original repo (as of this writing) has no name attached to the license. I have, however,
 used the same license they did (Apache 2.0).
+
+## Web UI
+
+just noting here
+
+- getting things on replicate-- you want to download checkpoints ahead of time, any ckpts you need
+- also not listed: yolox_l.onnx and dw-ll_ucoco_384.onnx from here
+https://github.com/IDEA-Research/DWPose/blob/onnx/README.md#-dwpose-for-controlnet
+  - i.e. `gdown 1w9pXC8tT0p9ndMN-CArp1__b2GbzewWI -O data/models/DWPose/ || true` and `gdown 12L8E2oAgZy4VACGSK9RaZBZrfgx7VTA2  -O data/models/DWPose/ || true`
+- 
