@@ -360,7 +360,7 @@ def generate(
         model_config.seed = seed
         print(f"Overriding seed from the model config (seed: {seed})")
     print(
-        f"types: head_prompt: {type(head_prompt)}, tail_prompt: {type(tail_prompt)}, prompt_map: {type(prompt_map)}, n_prompt: {type(n_prompt)}, seed: {type(seed)}"
+        f"types: model config head_prompt: {type(model_config.head_prompt)}, tail_prompt: {type(model_config.tail_prompt)}, prompt_map: {type(model_config.prompt_map)}, n_prompt: {type(model_config.n_prompt)}, seed: {type(model_config.seed)}"
     )
     raise AssertionError("stop here")
     is_v2 = is_v2_motion_module(data_dir.joinpath(model_config.motion_module))
