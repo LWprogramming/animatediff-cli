@@ -6,6 +6,7 @@ import uuid
 from cog import BasePredictor, Input, Path
 import os
 import sys
+from pathlib import Path
 
 sys.path.insert(0, "src")  # make animatediff importable
 from animatediff.cli import generate
@@ -35,7 +36,8 @@ class Predictor(BasePredictor):
             raise FileExistsError(f"Output directory {out_dir} already exists.")
         os.makedirs(out_dir)
         generate(
-            config_path=config_path,
+            model_name_or_path="stable-diffusion-v1-5",  # just loads from data/models/huggingface/stable-diffusion-v1-5, where we have the weights loaded locally, so we don't need to download them
+            config_path=Path(config_path),
             width=width,
             height=height,
             length=length,
