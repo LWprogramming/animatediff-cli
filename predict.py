@@ -1,6 +1,8 @@
 # Prediction interface for Cog ⚙️
 # https://github.com/replicate/cog/blob/main/docs/python.md
 
+from typing import List
+import uuid
 from cog import BasePredictor, Input, Path
 import os
 import sys
@@ -21,7 +23,12 @@ class Predictor(BasePredictor):
         height: int = Input(description="Height of the output", default=384),
         length: int = Input(description="Number of frames to generate", default=128),
         context: int = Input(description="Number of context frames to use", default=16),
-    ) -> Path:
+        out_dir: str = Input(description="Directory for output folders", default=str(uuid.uuid4())),
+        no_frames: bool = Input(description="Don't save frames, only the animation", default=True),
+        save_merged: bool = Input(description="Save a merged animation of all prompts", default=True),
+    ) -> List[Path]:
         """Run a single prediction on the model"""
-        os.system(f"animatediff generate -c {config_path} -W {width} -H {height} -L {length} -C {context}")
-        return Path(config_path)
+        os.system(
+            f"animatediff generate --config-path {config_path} --width {width} --height {height} --length {length} --context {context} --out-dir {out_dir} --no-frames {no_frames} --save-merged {save_merged}"
+        )
+        return [Path(os.path.join(out_dir, file)) for file in os.listdir(out_dir)]
