@@ -34,28 +34,28 @@ class Predictor(cog.BasePredictor):
         no_frames: bool = cog.Input(description="Don't save frames, only the animation", default=True),
         save_merged: bool = cog.Input(description="Save a merged animation of all prompts", default=True),
         head_prompt: str = cog.Input(
-            description="OPTIONAL: Override the head prompt from the model config. Here's a possible head prompt: robot, best quality, masterpiece, futuristic design",
+            description="OPTIONAL: Override the head prompt from the model config, which is added as a suffix to each prompt. Here's a possible head prompt: robot, best quality, masterpiece, futuristic design",
             default=None,
         ),
         tail_prompt: str = cog.Input(
-            description="OPTIONAL: Override the tail prompt from the model config. Here's a possible tail prompt: forward facing, standing, full body",
+            description="OPTIONAL: Override the tail prompt from the model config, which is added as a suffix to each prompt. Here's a possible tail prompt: forward facing, standing, full body",
             default=None,
         ),
         prompt_map: str = cog.Input(
             description=textwrap.dedent(
                 """
-            OPTIONAL: Override the prompt map from the model config. Format: 'number: description' per line. Here's a possible prompt map:
-            0: walking through a dense jungle scene. vines, trees, plants. camouflage and green metal finish.
-            32: walking slowly across the surface of mars. red dirt, rocks, mars landscape. bright metallic finish reflecting surroundings.
-            64: exploring an underwater shipwreck. fish, corals, sea plants, bubbles. rusted metal finish and ocean plant growth on body.
-            96: crossing a bridge over a busy futuristic city with flying cars. neon lights, glass buildings, bright colors. clean white and silver metal finish."""
+            OPTIONAL: Override the prompt map from the model config. Format: 'number: description' per line. Here's a possible prompt map (remember to insert newlines between each line):
+            0: walking through a dense jungle scene. vines, trees, plants. camouflage and green metal finish
+            32: walking slowly across the surface of mars. red dirt, rocks, mars landscape. bright metallic finish reflecting surroundings
+            64: exploring an underwater shipwreck. fish, corals, sea plants, bubbles. rusted metal finish and ocean plant growth on body
+            96: crossing a bridge over a busy futuristic city with flying cars. neon lights, glass buildings, bright colors. clean white and silver metal finish"""
             ),
             default=None,
         ),
         n_prompt: str = cog.Input(
             description=textwrap.dedent(
                 """OPTIONAL: Override the negative prompt from the model config. Single string input-- haven't implemented multiple negative prompts.
-            Unfortunately, to make things optional in Replicate, I have to make the default none so I can't add a suggestion directly in the box. Here's a possible negative prompt: worst quality, low quality, cropped, lowres, text, jpeg artifacts, multiple view, nude, nsfw, drawn incorrectly."""
+            Unfortunately, to make things optional in Replicate, I have to make the default none so I can't add a suggestion directly in the box. Here's a possible negative prompt: worst quality, low quality, cropped, lowres, text, jpeg artifacts, multiple view, nude, nsfw, drawn incorrectly"""
             ),
             default=None,
         ),
