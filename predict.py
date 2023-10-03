@@ -46,4 +46,11 @@ class Predictor(BasePredictor):
             no_frames=no_frames,
             save_merged=save_merged,
         )
-        return [Path(os.path.join(out_dir, file)) for file in os.listdir(out_dir)]
+
+        # return [Path(os.path.join(out_dir, file)) for file in os.listdir(out_dir)]
+        def get_files_recursive(path):
+            for root, dirs, files in os.walk(path):
+                for file in files:
+                    yield Path(root) / file
+
+        return list(get_files_recursive(out_dir))
