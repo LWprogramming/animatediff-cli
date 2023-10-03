@@ -7,6 +7,9 @@ from cog import BasePredictor, Input, Path
 import os
 import sys
 
+sys.path.insert(0, "src")  # make animatediff importable
+from animatediff.cli import generate
+
 
 class Predictor(BasePredictor):
     def setup(self) -> None:
@@ -31,7 +34,14 @@ class Predictor(BasePredictor):
         if os.path.exists(out_dir):
             raise FileExistsError(f"Output directory {out_dir} already exists.")
         os.makedirs(out_dir)
-        os.system(
-            f"animatediff generate --config-path {config_path} --width {width} --height {height} --length {length} --context {context} --out-dir {out_dir} --no-frames {no_frames} --save-merged {save_merged}"
+        generate(
+            config_path=config_path,
+            width=width,
+            height=height,
+            length=length,
+            context=context,
+            out_dir=out_dir,
+            no_frames=no_frames,
+            save_merged=save_merged,
         )
         return [Path(os.path.join(out_dir, file)) for file in os.listdir(out_dir)]

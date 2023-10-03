@@ -16,7 +16,6 @@ build:
 
   # a list of packages in the format <package-name>==<version>
   python_packages:
-    - ".[dev]"
     - "torch==2.0.1 --index-url https://download.pytorch.org/whl/cu118"
     - "torchvision==0.15.2 --index-url https://download.pytorch.org/whl/cu118"
     - "torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118"
@@ -33,7 +32,6 @@ build:
 
   # commands run after the environment is setup
   run:
-    - "python -m pip install -e '.[dev]'"
   #   - "echo env is ready!"
   #   - "echo another command if needed"
 
