@@ -42,7 +42,7 @@ class Predictor(BasePredictor):
             height=height,
             length=length,
             context=context,
-            out_dir=out_dir,
+            out_dir=Path(out_dir),
             no_frames=no_frames,
             save_merged=save_merged,
         )
