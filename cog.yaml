@@ -26,6 +26,8 @@ build:
     - "safetensors==0.3.1"
     - "imageio==2.27.0"
     - "triton"
+    - "rich"
+    - "tqdm"
   #   - "numpy==1.19.4"
   #   - "torch==1.8.0"
   #   - "torchvision==0.9.0"
