@@ -28,6 +28,9 @@ class Predictor(BasePredictor):
         save_merged: bool = Input(description="Save a merged animation of all prompts", default=True),
     ) -> List[Path]:
         """Run a single prediction on the model"""
+        if os.path.exists(out_dir):
+            raise FileExistsError(f"Output directory {out_dir} already exists.")
+        os.makedirs(out_dir)
         os.system(
             f"animatediff generate --config-path {config_path} --width {width} --height {height} --length {length} --context {context} --out-dir {out_dir} --no-frames {no_frames} --save-merged {save_merged}"
         )
