@@ -452,6 +452,17 @@ frame durations as 1/100ths of a second).
 
 Seems to work pretty well...
 
+## Replicate Web UI Notes
+
+Just noting here:
+
+- It's a bit nicer to download checkpoints ahead of time. Any checkpoints you need (see scripts/downloads) should be in the correct folder specified by the config folder.json. 
+- Non-exhaustive list of checkpoints: yolox_l.onnx and dw-ll_ucoco_384.onnx from here: https://github.com/IDEA-Research/DWPose/blob/onnx/README.md#-dwpose-for-controlnet
+  - For example: `gdown 1w9pXC8tT0p9ndMN-CAarp1__b2GbzewWI -O data/models/DWPose/ || true` and `gdown 12L8E2oAgZy4VACGSK9RaZBZrfgx7VTA2  -O data/models/DWPose/ || true`
+- [ ] Implement a feature to specify the models using a dropdown similar to https://github.com/lucataco/cog-animatediff.
+- [ ] Future improvement: Remove all the pretrained model loading in generate.py and create a script that allows users to select what they want to download. Initially, we'll just take the input from the prompt_travel.json file and make it work out of the box without having to download at inference time.
+- [ ] Long term consideration: Investigate if more setup tasks can be moved into the setup phase instead of building everything in predict. The current challenge is that the model loading code is locked behind generate and it's been difficult to work with the paths.
+
 ## TODO:
 
 In no particular order:
@@ -473,18 +484,8 @@ In no particular order:
 
 ## Credits:
 
-see [guoyww/AnimateDiff](https://github.com/guoyww/AnimateDiff) (very little of this is my work)
+See [guoyww/AnimateDiff](https://github.com/guoyww/AnimateDiff) (very little of this is my work)
 
-n.b. the copyright notice in `COPYING` is missing the original authors' names, solely because
+N.B. the copyright notice in `COPYING` is missing the original authors' names, solely because
 the original repo (as of this writing) has no name attached to the license. I have, however,
 used the same license they did (Apache 2.0).
-
-## Web UI
-
-just noting here
-
-- getting things on replicate-- you want to download checkpoints ahead of time, any ckpts you need
-- also not listed: yolox_l.onnx and dw-ll_ucoco_384.onnx from here
-https://github.com/IDEA-Research/DWPose/blob/onnx/README.md#-dwpose-for-controlnet
-  - i.e. `gdown 1w9pXC8tT0p9ndMN-CArp1__b2GbzewWI -O data/models/DWPose/ || true` and `gdown 12L8E2oAgZy4VACGSK9RaZBZrfgx7VTA2  -O data/models/DWPose/ || true`
-- 
