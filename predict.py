@@ -7,6 +7,7 @@ import uuid
 import cog
 import os
 import sys
+import uuid
 
 # from pathlib import Path
 import pathlib  # do NOT import Path because it will conflict with cog.Path
@@ -30,7 +31,6 @@ class Predictor(cog.BasePredictor):
         height: int = cog.Input(description="Height of the output", default=384),
         length: int = cog.Input(description="Number of frames to generate", default=128),
         context: int = cog.Input(description="Number of context frames to use", default=16),
-        out_dir: str = cog.Input(description="Directory for output folders", default="output"),
         no_frames: bool = cog.Input(description="Don't save frames, only the animation", default=True),
         save_merged: bool = cog.Input(description="Save a merged animation of all prompts", default=True),
         head_prompt: str = cog.Input(
@@ -65,6 +65,8 @@ class Predictor(cog.BasePredictor):
         ),
     ) -> List[cog.Path]:
         """Run a single prediction on the model"""
+        out_dir = str(uuid.uuid4())
+        print(f"out_dir uuid is {out_dir}")
         if not os.path.exists(out_dir):
             os.makedirs(out_dir)
         # Parse prompt_map and n_prompt
