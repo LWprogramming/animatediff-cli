@@ -85,7 +85,7 @@ class Predictor(cog.BasePredictor):
                 ) from e
         if n_prompt is not None:
             n_prompt = [n_prompt]  # will be used for all prompts
-        if seed is None:
+        if seed is not None:
             seed = [seed]
 
         print("beginning generation")
