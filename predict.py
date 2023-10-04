@@ -23,18 +23,8 @@ class Predictor(cog.BasePredictor):
 
     def predict(
         self,
-        config_path: str = cog.Input(
-            description="Path to the configuration file",
-            default="config/prompts/prompt_travel.json",
-        ),
-        width: int = cog.Input(description="Width of the output", default=256),
-        height: int = cog.Input(description="Height of the output", default=384),
-        length: int = cog.Input(description="Number of frames to generate", default=128),
-        context: int = cog.Input(description="Number of context frames to use", default=16),
-        no_frames: bool = cog.Input(description="Don't save frames, only the animation", default=True),
-        save_merged: bool = cog.Input(description="Save a merged animation of all prompts", default=True),
         head_prompt: str = cog.Input(
-            description="OPTIONAL: Override the head prompt from the model config, which is added as a suffix to each prompt. Here's a possible head prompt: robot, best quality, masterpiece, futuristic design",
+            description="OPTIONAL: Override the head prompt from the model config, which is added as a prefix to each prompt. Here's a possible head prompt: robot, best quality, masterpiece, futuristic design",
             default=None,
         ),
         tail_prompt: str = cog.Input(
@@ -59,10 +49,20 @@ class Predictor(cog.BasePredictor):
             ),
             default=None,
         ),
+        width: int = cog.Input(description="Width of the output", default=256),
+        height: int = cog.Input(description="Height of the output", default=384),
+        length: int = cog.Input(description="Number of frames to generate", default=128),
+        context: int = cog.Input(description="Number of context frames to use", default=16),
         seed: int = cog.Input(
             description="OPTIONAL: Seed for the random number generator. Haven't implemented multiple seeds yet.",
             default=None,
         ),
+        config_path: str = cog.Input(
+            description="Path to the configuration file",
+            default="config/prompts/prompt_travel.json",
+        ),
+        no_frames: bool = cog.Input(description="Don't save frames, only the animation", default=True),
+        save_merged: bool = cog.Input(description="Save a merged animation of all prompts", default=True),
     ) -> List[cog.Path]:
         """Run a single prediction on the model"""
         out_dir = str(uuid.uuid4())
