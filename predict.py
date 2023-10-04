@@ -60,7 +60,7 @@ class Predictor(cog.BasePredictor):
             default=None,
         ),
         seed: int = cog.Input(
-            description="OPTIONAL: Seed for the random number generator",
+            description="OPTIONAL: Seed for the random number generator. Haven't implemented multiple seeds yet.",
             default=None,
         ),
     ) -> List[cog.Path]:
@@ -83,6 +83,10 @@ class Predictor(cog.BasePredictor):
                 raise ValueError(
                     "prompt_map is not formatted correctly. It should be 'number: description' per line"
                 ) from e
+        if n_prompt is not None:
+            n_prompt = [n_prompt]  # will be used for all prompts
+        if seed is None:
+            seed = [seed]
 
         print("beginning generation")
         generate(

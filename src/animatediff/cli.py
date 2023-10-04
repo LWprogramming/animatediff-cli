@@ -305,18 +305,18 @@ def generate(
         ),
     ] = None,
     n_prompt: Annotated[
-        Optional[str],
+        Optional[List[str]],
         typer.Option(
             "--n-prompt",
-            help="OPTIONAL: Override the negative prompt from the model config",
+            help="OPTIONAL: Override the negative prompt from the model config. It's ok for this to just be a list of a single element-- in that case it will be used for all prompts",
             rich_help_panel="Advanced",
         ),
     ] = None,
     seed: Annotated[
-        Optional[int],
+        Optional[List[int]],
         typer.Option(
             "--seed",
-            help="OPTIONAL: Override the seed from the model config",
+            help="OPTIONAL: Override the seed from the model config. It's ok for this to just be a single element-- in that case it will be used for all prompts",
             rich_help_panel="Advanced",
         ),
     ] = None,
@@ -359,10 +359,9 @@ def generate(
     if seed is not None:
         model_config.seed = seed
         print(f"Overriding seed from the model config (seed: {seed})")
-    print(
-        f"types: model config head_prompt: {type(model_config.head_prompt)}, tail_prompt: {type(model_config.tail_prompt)}, prompt_map: {type(model_config.prompt_map)}, n_prompt: {type(model_config.n_prompt)}, seed: {type(model_config.seed)}"
-    )
-    raise AssertionError("stop here")
+    # print(
+    #     f"types: model config head_prompt: {type(model_config.head_prompt)}, tail_prompt: {type(model_config.tail_prompt)}, prompt_map: {type(model_config.prompt_map)}, n_prompt: {type(model_config.n_prompt)}, seed: {type(model_config.seed)}. n_prompt is {model_config.n_prompt} and seed is {model_config.seed}"
+    # )
     is_v2 = is_v2_motion_module(data_dir.joinpath(model_config.motion_module))
     infer_config: InferenceConfig = get_infer_config(is_v2)
 
@@ -456,6 +455,9 @@ def generate(
 
     gen_num = 0  # global generation index
 
+    # print(
+    #     f"double checking model config n prompt and seed right before generating bc of some weird typing issue. n_prompt is {model_config.n_prompt} with type {type(model_config.n_prompt)} and seed is {model_config.seed} with type {type(model_config.seed)}"
+    # )
     # repeat the prompts if we're doing multiple runs
     for _ in range(repeats):
         if model_config.prompt_map:
