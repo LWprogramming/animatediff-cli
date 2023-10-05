@@ -634,6 +634,20 @@ def controlnet_preprocess(
     out_dir: PathLike = ...,
     device_str: str = None,
 ):
+    """
+    This function preprocesses controlnet images based on the provided configuration.
+
+    Args:
+        controlnet_map: A dictionary containing configuration details for each controlnet.
+        width: something about controlnet_ref, but seems unused because its original use was commented out
+        height: something about controlnet_ref, but seems unused because its original use was commented out
+        duration: The maximum frame number to consider. Images with a frame number less than `duration` are processed; others are ignored.
+        out_dir: The directory where preprocessed images are saved if the `save_detectmap` option is enabled in the `controlnet_map`.
+        device_str: The device to use for preprocessing. If `preprocess_on_gpu` is enabled in the `controlnet_map`, this should be a GPU device.
+
+    Returns:
+        Tuple[Dict, Dict, Dict]: Returns three dictionaries - `controlnet_image_map` containing preprocessed images indexed by frame number and controlnet name, `controlnet_type_map` containing configuration details for each processed controlnet, and `controlnet_ref_map` containing the preprocessed reference image if "controlnet_ref" is enabled in the `controlnet_map`.
+    """
     if not controlnet_map:
         return None, None, None
 
