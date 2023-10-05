@@ -465,6 +465,7 @@ def load_controlnet_models(
     pipe: AnimationPipeline,
     model_config: ModelConfig = ...,
 ):
+    """For each controlnet in the map, load it if it's enabled and there are reference images in its directory"""
     # controlnet
     controlnet_map = {}
     if model_config.controlnet_map:
